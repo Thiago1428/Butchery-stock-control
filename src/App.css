@@ -7,7 +7,13 @@
     --bg-card-dark: #16161e;
     --text-color-desc: #9ca3af;
     --text-color-icons: #6b7280;
+    --text-color-placeholder: #4b5563;
     --text-color-value: #c084fc;
     --font-display: "Poppins";
     --icons-card-color: #b06ff1;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

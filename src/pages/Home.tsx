@@ -3,7 +3,6 @@ import { CiStickyNote } from "react-icons/ci";
 import { GiSteak } from "react-icons/gi";
 import { GoHistory } from "react-icons/go";
 import { Card } from "../components/Card";
-import { SideBar } from "../components/Sidebar";
 
 export function Home() {
 
@@ -12,7 +11,6 @@ export function Home() {
         <>
         
             <main className="flex w-screen h-screen p-0 m-0 font-display bg-(--bg-primary) ">
-                <SideBar/>
                 <div className="h-full w-full flex flex-col items-center justify-center text-white">
                     <div className="flex w-full max-w-[900px] flex-col rounded-2xl bg-linear-to-br from-[#1a1a24] to-[#16161e] p-8 border border-purple-500/20 shadow-lg shadow-purple-500/10">
                         <span className="text-2xl">Ações Rápidas</span>
