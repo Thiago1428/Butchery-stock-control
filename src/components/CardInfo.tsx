@@ -9,7 +9,7 @@ type CardInfoProps = {
 export function CardInfo({ Icon, text, value }: CardInfoProps) {
     return (
         <>
-            <div> {/*Total Gasto*/}
+            <div>
                 <div className="p-4 rounded-xl bg-purple-600/10 border border-purple-500/20 w-100 h-25 mb-8">
                     <div className="flex flex-row items-center gap-2 mb-4">
                         <Icon className="w-5 h-5 text-purple-400" />

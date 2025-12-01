@@ -7,11 +7,11 @@ export function Customers() {
     const navigate = useNavigate();
 
     const clients = [
-        {name: "Person1"},
-        {name: "Person2"},
-        {name: "Person3"},
-        {name: "Person4"},
-        
+        { name: "Person1", id: 1 },
+        { name: "Person2", id: 2 },
+        { name: "Person3", id: 3 },
+        { name: "Person4", id: 4 },
+
     ] //Teste de criação automatica
 
 
@@ -24,15 +24,12 @@ export function Customers() {
                             <span className="text-4xl">Clientes</span>
                             <span className="text-[16px] text-desc">Gerencie seus clientes</span>
                         </div>
-                        <Button Icon={GoPlus} text="Criar cliente" action={() => navigate("/create-customer")} IconType="font-semibold" textType="font-semibold"/>
+                        <Button Icon={GoPlus} text="Criar cliente" action={() => navigate("/create-customer")} IconType="font-semibold" textType="font-semibold" />
                     </div>
                     <div className="mt-8 flex flex-col items-center gap-5">
                         {clients.map(item => {
-                            return(
-                                <>
-                                    <CustomersCard name={item.name}/>
-                                </>
-                                
+                            return (
+                                <CustomersCard id={item.id} name={item.name} />
                             )
                         })}
                     </div>

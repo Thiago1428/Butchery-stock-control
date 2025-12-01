@@ -10,10 +10,12 @@ import { Steak } from "../pages/Steak";
 import { History } from "../pages/History";
 import { CreateCustomer } from "../pages/CreateCustomer";
 import { Profile } from "../pages/Profile";
+import { DetailsOrder } from "../pages/DetailsOrder";
+import { CreateSteak } from "../pages/createSteak";
 
 const AppLayout = () => {
     return (
-        <div className="flex min-h-screen bg-[#09090b]">
+        <div className="flex min-h-screen font-display bg-[#09090b]">
             
             <SideBar />
             <main className="flex-1 transition-all duration-300">
@@ -34,6 +36,8 @@ export function AppRoutes() {
                 <Route path="/history" element={<History />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/create-customer" element={<CreateCustomer />} /> 
+                <Route path="/details-order" element={<DetailsOrder />} /> 
+                <Route path="/create-steak" element={<CreateSteak />} /> 
             </Route>
         </Routes>
     )

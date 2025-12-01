@@ -1,7 +1,7 @@
 import { LuUser } from "react-icons/lu";
 import { LuShoppingBag } from "react-icons/lu";
-import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { Trash } from "./Trash";
 
 type CustomersCardProps = {
     name: string,
@@ -36,9 +36,7 @@ export function CustomersCard({name}: CustomersCardProps) {
                     >
                         Ver Perfil {/*Talvez necessite de um ID para verificar qual perfil é*/}
                     </button>
-                    <button className="flex flex-row items-center justify-center cursor-pointer w-12 h-10 rounded-xl bg-red-600/10 hover:bg-red-600/20 text-red-400 transition-all duration-300 border border-red-500/20 hover:border-red-500/40">
-                        <FaRegTrashCan className="w-4 h-4" /> {/*Talvez necessite de um ID para verificar qual perfil é*/}
-                    </button>
+                    <Trash text="Excluir" />
                 </div>
             </div>
         </>
