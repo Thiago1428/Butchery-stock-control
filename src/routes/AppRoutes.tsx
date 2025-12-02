@@ -11,7 +11,7 @@ import { History } from "../pages/History";
 import { CreateCustomer } from "../pages/CreateCustomer";
 import { Profile } from "../pages/Profile";
 import { DetailsOrder } from "../pages/DetailsOrder";
-import { CreateSteak } from "../pages/createSteak";
+import { CreateSteak } from "../pages/CreateSteak";
 
 const AppLayout = () => {
     return (

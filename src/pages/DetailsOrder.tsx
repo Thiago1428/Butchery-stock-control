@@ -26,7 +26,7 @@ export function DetailsOrder() {
 
     return (
         <>
-            <main className="w-screen min-h-screen h-full p-0 m-0 flex flex-col items-center">
+            <main className="w-full min-h-screen h-full p-0 m-0 flex flex-col items-center">
                 <div className="flex flex-col text-white w-200 mt-20 gap-8 mb-12">
                     <div className="flex flex-row justify-between">
                         <div className="flex flex-col">
