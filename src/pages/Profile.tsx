@@ -18,7 +18,8 @@ export function Profile() {
             itens: [
                 { steak: "Picanha", weight: 4},
                 { steak: "Costela", weight: 2},
-                { steak: "Filé", weight: 1.2}
+                { steak: "Filé", weight: 1.2},
+                
             ],
             obs: "Entregar dia 21 de novembro"
         },

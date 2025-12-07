@@ -54,8 +54,8 @@ export function DetailsOrder() {
                                 Itens.map(item => (
                                     <div className="flex items-center justify-between p-4 rounded-xl bg-purple-600/10 border border-purple-500/20">
                                         <div className="flex flex-col gap-1">
-                                            <span className="text-xl text-white">{item.steak}</span>
-                                            <span className="text-desc text-[16px]">R$ {item.price}/kg x {item.weight}kg</span>
+                                            <span className="text-[18px] text-white">{item.steak}</span>
+                                            <span className="text-desc text-[14px]">R$ {item.price}/kg x {item.weight}kg</span>
                                         </div>
                                         <div>
                                             <span>R$ {(item.price * item.weight).toFixed(2)}</span>
@@ -70,7 +70,7 @@ export function DetailsOrder() {
                                 <>
                                     <div className="flex flex-row justify-between items-center pb-3 border-b border-purple-500/20">
                                         <span className="text-desc text-[15px]">Total:</span>
-                                        <span className="text-2xl text-purple-400">R$ {(final_value).toFixed(2)}</span>
+                                        <span className="text-xl text-purple-400">R$ {(final_value).toFixed(2)}</span>
                                     </div>
                                 </>
                             }/>
