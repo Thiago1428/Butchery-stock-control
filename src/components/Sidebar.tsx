@@ -11,7 +11,7 @@ export function SideBar() {
     const menuItems = [
         { id: '/', icon: LuLayoutDashboard, label: 'Dashboard' },
         { id: '/customers', icon: FiUsers, label: 'Clientes' },
-        { id: '/notes', icon: CiStickyNote, label: 'Criar Nota' },
+        { id: '/notes', icon: CiStickyNote, label: 'Criar Pedido' },
         { id: '/steak', icon: GiSteak, label: 'Carnes' },
         { id: '/history', icon: GoHistory, label: 'Histórico' },
     ]

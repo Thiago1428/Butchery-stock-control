@@ -16,7 +16,7 @@ export function Home() {
                         <span className="text-2xl">Ações Rápidas</span>
                         <div className="mt-6 grid w-full grid-cols-2 gap-6">
                             <Card Icon={FiUsers} text="Clientes" page="/customers" />
-                            <Card Icon={CiStickyNote} text="Notas" page="/notes"/>
+                            <Card Icon={CiStickyNote} text="Pedidos" page="/notes"/>
                             <Card Icon={GiSteak} text="Carnes" page="/steak"/>
                             <Card Icon={GoHistory} text="Histórico" page="/history"/>
                         </div>

@@ -13,7 +13,7 @@ export function Card({ Icon, text, page }: CardProps) {
     return (
         <>
             <button
-                className="group relative flex h-[110px] w-full items-center gap-6 overflow-hidden rounded-xl border border-purple-500/20 bg-purple-500/10 p-6 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 hover:border-purple-500/30 hover:bg-purple-500/20 hover:shadow-lg hover:shadow-purple-500/20"
+                className="group relative flex h-[110px] w-full items-center gap-6 overflow-hidden rounded-xl border bg-purple-600/10 hover:bg-purple-600/20 p-6 border-purple-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 hover:scale-105"
                 onClick={() => navigate(page)}
             >
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-purple-500/20 transition-colors group-hover:bg-purple-500/30">

@@ -20,7 +20,7 @@ export function InputCreate({ name, Icon, type ,placeholder }: InputCreateProps)
                     name="name-customer"
                     id="customer"
                     placeholder={placeholder}
-                    className="w-full pl-12 pr-4 py-4 rounded-xl bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors text-white placeholder:text-gray-600"
+                    className="w-full scheme-dark pl-12 pr-4 py-4 rounded-xl bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors text-white placeholder:text-gray-600"
                     required
                     step="any"
                 />

@@ -29,6 +29,7 @@ export function Notes() {
     const [change, setChange] = useState<number>(0)
     const [searchSteak, setSearchSteak] = useState<string>("")
     const [viewAll, setViewAll] = useState<boolean>(false)
+    const [customerFilter, setCustomerFilter] = useState<string>("")
 
     const costumers = [
         { name: "Thiago" },
@@ -165,7 +166,15 @@ export function Notes() {
                             <div className="flex flex-col gap-8 mt-4">
                                 <div className="flex flex-col gap-8 w-200 rounded-2xl bg-linear-to-br from-[#1a1a24] to-[#16161e] p-6 border border-purple-500/20 shadow-lg shadow-purple-500/10">
                                     <div className="flex flex-row justify-between gap-8 items-center">
-                                        <InputCreateNote Icon={LuUser} name="Clientes" type="user" content={costumers} />
+                                        <InputCreateNote 
+                                            Icon={LuUser} 
+                                            name="Clientes" 
+                                            type="user" 
+                                            content={costumers} 
+                                            placeholder="Procure um cliente"
+                                            value={customerFilter}
+                                            onChange={(e) => setCustomerFilter(e.target.value)}
+                                        />
                                         <InputCreateNote Icon={CiCalendar} name="Data" type="date" />
                                     </div>
                                     <InputCreateNote Icon={FaRegClipboard} name="Observação" type="obs" />
@@ -279,7 +288,7 @@ export function Notes() {
                             {payment == "dinheiro" &&
                                 <div className="flex flex-col gap-2">
                                     <span className="text-desc text-[14px] pl-1">Valor Recebido</span>
-                                    <input type="number" defaultValue={0} min={0} step={0.01} onChange={(e) => setChange(parseFloat(e.target.value))} placeholder="R$ 0.00" className="w-full px-4 py-3 rounded-xl bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors text-white dark:scheme-dark" />
+                                    <input type="number" min={0} step={0.01} onChange={(e) => setChange(isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value))} placeholder="R$ 0.00" className="w-full px-4 py-3 rounded-xl bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors text-white dark:scheme-dark" />
                                 </div>
                             }
                             <div className="flex flex-col items-center gap-8 border-t border-purple-500/20">
