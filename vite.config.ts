@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     electron({
-      entry: "./src/electron/main.ts"
+      entry: "./electron/main.ts"
     })
   ],
   server: {
