@@ -5,7 +5,7 @@ app.disableHardwareAcceleration()
 
 app.on("ready", () => {
     const mainWindow = new BrowserWindow({
-        minWidth: 1400,
+        minWidth: 1450,
         minHeight: 800,
         //autoHideMenuBar: true,
     })

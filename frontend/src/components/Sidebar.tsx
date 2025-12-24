@@ -20,7 +20,7 @@ export function SideBar() {
 
     return (
         <>
-            <nav className="flex flex-col items-center justify-center h-full w-15 fixed">
+            <nav className="flex flex-col items-center justify-center h-full w-15 fixed z-100">
                 <div className="bg-[#0f0f14] rounded-r-2xl p-4 border border-purple-500/40 flex flex-col items-center justify-center gap-6">
                     {menuItems.map(item => {
                         const isActive = currentPage.pathname === item.id
