@@ -1,5 +1,6 @@
 import { Return } from "../components/Return";
 import { LuUser } from "react-icons/lu";
+import { Modal } from "../components/Modal";
 import { CiCalendar } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { FaRegClipboard } from "react-icons/fa";
@@ -9,141 +10,94 @@ import { Trash } from "../components/Trash";
 import { Button } from "../components/Button";
 import { GoPlus } from "react-icons/go";
 import { IoRemove } from "react-icons/io5";
-
-
-
-
-interface Steak {
-    name: string,
-    id: number,
-    price: number,
-    weigth?: number
-}
+import { CustomersService, type Customer, SteaksService, type Steak, type CreateOrderPayload } from "../services/api";
+import { OrdersService } from "../services/api";
 
 
 export function Notes() {
 
-    const [list, setList] = useState<Steak[]>([])
+    interface CartItem extends Steak {
+        weight?: number
+    }
+
+    const [list, setList] = useState<CartItem[]>([])
     const [payment, setPayment] = useState<string>("")
     const [value, setValue] = useState<number>(0)
     const [change, setChange] = useState<number>(0)
     const [searchSteak, setSearchSteak] = useState<string>("")
     const [viewAll, setViewAll] = useState<boolean>(false)
     const [customerFilter, setCustomerFilter] = useState<string>("")
+    const [obs, setObs] = useState<string>("")
+    const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0])
+    const [showModal, setShowModal] = useState(false)
+    const [costumers, setCostumers] = useState<Customer[]>([])
+    const [steaks, setSteaks] = useState<Steak[]>([])
 
-    const costumers = [
-        { name: "Thiago" },
-        { name: "Mariana" },
-        { name: "Gabriel" },
-        { name: "Fernanda" },
-        { name: "Lucas" },
-        { name: "Juliana" },
-        { name: "Rafael" },
-        { name: "Camila" },
-        { name: "Bruno" },
-        { name: "Ana Clara" },
-        { name: "Matheus" },
-        { name: "Letícia" },
-        { name: "Gustavo" },
-        { name: "Beatriz" },
-        { name: "Vinícius" },
-        { name: "Aline" },
-        { name: "Diego" },
-        { name: "Larissa" },
-        { name: "João Pedro" },
-        { name: "Carolina" },
-        { name: "Eduardo" },
-        { name: "Bianca" },
-        { name: "Felipe" },
-        { name: "Isabela" },
-        { name: "André" },
-        { name: "Natália" },
-        { name: "Pedro Henrique" },
-        { name: "Bruna" },
-        { name: "Rodrigo" },
-        { name: "Sofia" },
-        { name: "Leonardo" },
-        { name: "Daniela" },
-        { name: "Samuel" },
-        { name: "Patrícia" },
-        { name: "Henrique" },
-        { name: "Roberta" },
-        { name: "Caio" },
-        { name: "Nicole" },
-        { name: "Alexandre" },
-        { name: "Helena" },
-        { name: "Marcelo" },
-        { name: "Melissa" },
-        { name: "Vitor" },
-        { name: "Jéssica" },
-        { name: "Igor" },
-        { name: "Renata" },
-        { name: "Arthur" },
-        { name: "Clara" },
-        { name: "Miguel" },
-        { name: "Alice" }
-    ]
 
-    const steaks: Steak[] = [
-        { name: "Picanha", id: 1, price: 55 },
-        { name: "Costela", id: 2, price: 89 },
-        { name: "Contrafilé", id: 3, price: 123 },
-        { name: "Contrafilé", id: 1, price: 89 },
-        { name: "Picanha", id: 2, price: 129 },
-        { name: "Alcatra", id: 3, price: 84 },
-        { name: "Maminha", id: 4, price: 79 },
-        { name: "Fraldinha", id: 5, price: 82 },
-        { name: "Costela Bovina", id: 6, price: 58 },
-        { name: "Cupim", id: 7, price: 65 },
-        { name: "Patinho", id: 8, price: 69 },
-        { name: "Coxão Mole", id: 9, price: 72 },
-        { name: "Coxão Duro", id: 10, price: 59 },
-        { name: "Lagarto", id: 11, price: 61 },
-        { name: "Filé Mignon", id: 12, price: 149 },
-        { name: "Acém", id: 13, price: 41 },
-        { name: "Peito Bovino", id: 14, price: 37 },
-        { name: "Rabada", id: 15, price: 49 },
-        { name: "Paleta", id: 16, price: 44 },
-        { name: "Músculo", id: 17, price: 39 },
-        { name: "T-Bone", id: 18, price: 139 },
-        { name: "Prime Rib", id: 19, price: 142 },
-        { name: "Short Rib", id: 20, price: 138 },
-        { name: "Ancho", id: 21, price: 135 },
-        { name: "Denver Steak", id: 22, price: 128 },
-        { name: "Brisket", id: 23, price: 55 },
-        { name: "Bife de Chorizo", id: 24, price: 133 },
-        { name: "Bisteca Bovina", id: 25, price: 47 },
-        { name: "Carne Moída", id: 26, price: 32 },
-        { name: "Costelinha Suína", id: 27, price: 39 },
-        { name: "Pernil Suíno", id: 28, price: 29 },
-        { name: "Lombo Suíno", id: 29, price: 34 },
-        { name: "Bisteca Suína", id: 30, price: 28 },
-        { name: "Filé Suíno", id: 31, price: 37 },
-        { name: "Barriga Suína", id: 32, price: 33 },
-        { name: "Linguiça Toscana", id: 33, price: 24 },
-        { name: "Linguiça Calabresa", id: 34, price: 26 },
-        { name: "Linguiça Artesanal", id: 35, price: 38 },
-        { name: "Cordeiro Pernil", id: 36, price: 115 },
-        { name: "Cordeiro Carré", id: 37, price: 145 },
-        { name: "Cordeiro Paleta", id: 38, price: 119 },
-        { name: "Frango Peito", id: 39, price: 18 },
-        { name: "Frango Coxa e Sobrecoxa", id: 40, price: 16 },
-        { name: "Frango Asa", id: 41, price: 17 },
-        { name: "Frango Filé Sassami", id: 42, price: 21 },
-        { name: "Frango Coração", id: 43, price: 34 },
-        { name: "Peru Peito", id: 44, price: 31 },
-        { name: "Peru Coxa", id: 45, price: 29 },
-        { name: "Carne de Sol", id: 46, price: 52 },
-        { name: "Carne Seca", id: 47, price: 55 },
-        { name: "Charque", id: 48, price: 49 },
-        { name: "Bucho Bovino", id: 49, price: 27 },
-        { name: "Tripas", id: 50, price: 23 }
+    async function HandleSubmit(e: React.FormEvent) {
+        e.preventDefault()
 
-    ]
+        const customer = costumers.find((customer) => customer.name === customerFilter)
+
+        if (!payment) {
+            alert("Selecione uma forma de pagamento!")
+            return
+        }
+
+        if (!customer) {
+            alert("Selecione um cliente válido!")
+            return
+        }
+
+        const paymentMap: Record<string, string> = {
+            "dinheiro": "cash",
+            "pix": "pix",
+            "cartão": "card"
+        }
+
+        const payload: CreateOrderPayload = {
+            customer_id: customer.id,
+            total_value: value,
+            payment_method: paymentMap[payment] || payment,
+            payment_received: change,
+            obs: obs,
+            created_at: new Date(date).toISOString(),
+            items: list.map((item) => ({
+                steakId: item.id,
+                weight: item.weight || 1,
+                subtotal: item.price * (item.weight || 1),
+            })),
+        }
+
+        try {
+            await OrdersService.create(payload)
+            setShowModal(true)
+            setList([])
+            setPayment("")
+            setCustomerFilter("")
+            setObs("")
+            setDate(new Date().toISOString().split('T')[0])
+        } catch (error) {
+            console.error(error)
+            alert("Erro ao criar pedido!")
+        }
+
+    }
+
+
+    useEffect(() => {
+        CustomersService.getAll().then((data) => {
+            setCostumers(data)
+        })
+        SteaksService.getAll().then((data) => {
+            setSteaks(data)
+        })
+    }, [])
+
 
     useEffect(() => {
         const total = list.reduce((acc, item) => {
-            return acc + (item.price * (item.weigth ?? 1))
+            return acc + (item.price * (item.weight ?? 1))
         }, 0)
         setValue(total)
     }, [list])
@@ -154,7 +108,7 @@ export function Notes() {
         <>
             <main className="flex w-screen min-h-screen h-full p-0 m-0">
                 <div className="w-full h-full flex flex-col items-center text-white">
-                    <div className="flex flex-row"> {/*Form*/}
+                    <form onSubmit={HandleSubmit} className="flex flex-row">
                         <div className="flex flex-col w-150 mt-12">
                             <div className="flex flex-col gap-2">
                                 <Return />
@@ -166,18 +120,30 @@ export function Notes() {
                             <div className="flex flex-col gap-8 mt-4">
                                 <div className="flex flex-col gap-8 w-200 rounded-2xl bg-linear-to-br from-[#1a1a24] to-[#16161e] p-6 border border-purple-500/20 shadow-lg shadow-purple-500/10">
                                     <div className="flex flex-row justify-between gap-8 items-center">
-                                        <InputCreateNote 
-                                            Icon={LuUser} 
-                                            name="Clientes" 
-                                            type="user" 
-                                            content={costumers} 
+                                        <InputCreateNote
+                                            Icon={LuUser}
+                                            name="Clientes"
+                                            type="user"
+                                            content={costumers}
                                             placeholder="Procure um cliente"
                                             value={customerFilter}
                                             onChange={(e) => setCustomerFilter(e.target.value)}
                                         />
-                                        <InputCreateNote Icon={CiCalendar} name="Data" type="date" />
+                                        <InputCreateNote
+                                            Icon={CiCalendar}
+                                            name="Data"
+                                            type="date"
+                                            value={date}
+                                            onChange={(e) => setDate(e.target.value)}
+                                        />
                                     </div>
-                                    <InputCreateNote Icon={FaRegClipboard} name="Observação" type="obs" />
+                                    <InputCreateNote
+                                        Icon={FaRegClipboard}
+                                        name="Observação"
+                                        type="obs"
+                                        value={obs}
+                                        onChange={(e) => setObs(e.target.value)}
+                                    />
                                 </div>
                                 <div className="flex flex-col gap-4 w-200 text-white rounded-2xl bg-linear-to-br from-[#1a1a24] to-[#16161e] p-6 border border-purple-500/20 shadow-lg shadow-purple-500/10">
                                     <div>
@@ -235,7 +201,7 @@ export function Notes() {
                                     </div>
                                     <div className="flex flex-col w-full h-full gap-4">
                                         {list.map((item, index) => {
-                                            const final_price = (item.weigth ?? 1) * item.price
+                                            const final_price = (item.weight ?? 1) * item.price
                                             return (
                                                 <div id={String(item.id)} className="flex flex-row justify-between w-full items-center gap-4 p-4 rounded-xl bg-purple-600/10 border border-purple-500/20">
                                                     <div className="flex flex-col gap-1">
@@ -246,7 +212,7 @@ export function Notes() {
                                                         <div className="flex flex-row w-36 items-center gap-2">
                                                             <input type="number" onChange={(e) => {
                                                                 const newList = [...list]
-                                                                newList[index].weigth = parseFloat(e.target.value) || 0
+                                                                newList[index].weight = parseFloat(e.target.value) || 0
                                                                 setList(newList)
 
                                                             }} defaultValue={1} min={0} step={0.01} className="w-full dark:scheme-dark px-3 py-2 rounded-lg bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors text-white text-center" />
@@ -309,14 +275,21 @@ export function Notes() {
 
                                 </div>
                                 <div>
-                                    <Button text="Salvar nota" />
+                                    <Button text="Salvar nota" type="submit" />
                                 </div>
                             </div>
                         </div>
-                    </div> {/*Form */}
+                    </form> {/*Form */}
 
                 </div>
             </main>
+            <Modal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                title="Sucesso!"
+                message="O pedido foi criado com sucesso e registrado no histórico."
+                type="success"
+            />
         </>
     )
 }

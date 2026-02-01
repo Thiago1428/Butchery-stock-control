@@ -2,16 +2,18 @@ import { LuUser } from "react-icons/lu";
 import { LuShoppingBag } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { Trash } from "./Trash";
+import { CustomersService } from "../services/api";
 
 type CustomersCardProps = {
     name: string,
-    orders?: number,
-    total?: number,
-    id?: number
-} // Depois retirar a opcionalidade dos elementos
+    orders_count: number,
+    total_spent: number,
+    id: number,
+    onDelete?: () => void
+}
 
 
-export function CustomersCard({name}: CustomersCardProps) {
+export function CustomersCard({ name, orders_count, total_spent, id, onDelete }: CustomersCardProps) {
     const navigate = useNavigate()
     return (
         <>
@@ -24,19 +26,22 @@ export function CustomersCard({name}: CustomersCardProps) {
                     <div className="flex flex-row gap-8">
                         <div className="flex flex-row text-icons items-center gap-2">
                             <LuShoppingBag />
-                            <span className="text-[14px]">12 pedidos</span> {/*Var*/}
+                            <span className="text-[14px]">{orders_count} {orders_count === 1 ? "pedido" : "pedidos"}</span>
                         </div>
-                        <span className="text-desc text-[14px]">Total: <span className="text-value text-[14px]">R$ 12.000,00</span></span> {/*Var*/}
+                        <span className="text-desc text-[14px]">Total: <span className="text-value text-[14px]">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total_spent)}</span></span>
                     </div>
                 </div>
                 <div className="ml-auto flex flex-row gap-4 items-end">
-                    <button 
+                    <button
                         className="w-35 h-10 rounded-2xl cursor-pointer bg-purple-600/20 hover:bg-purple-600/30 text-purple-400 transition-all duration-300 border border-purple-500/30 hover:border-purple-500/50"
-                        onClick={() => navigate("/profile")}
+                        onClick={() => navigate(`/customer/${id}`)}
                     >
-                        Ver Perfil {/*Talvez necessite de um ID para verificar qual perfil é*/}
+                        Ver Perfil
                     </button>
-                    <Trash text="Excluir" />
+                    <Trash action={async () => {
+                        await CustomersService.delete(id)
+                        if (onDelete) onDelete()
+                    }} />
                 </div>
             </div>
         </>

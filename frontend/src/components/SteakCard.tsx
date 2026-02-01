@@ -2,15 +2,17 @@ import { GiSteak } from "react-icons/gi";
 import { GoPencil } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { Trash } from "./Trash";
+import { SteaksService } from "../services/api";
 
 type CustomersCardProps = {
     name: string,
     price: number,
-    id?: number
-} // Depois retirar a opcionalidade dos elementos
+    id: number,
+    onDelete?: () => void
+}
 
 
-export function SteakCard({name, price}: CustomersCardProps) {
+export function SteakCard({ name, price, id, onDelete }: CustomersCardProps) {
     const navigate = useNavigate()
     return (
         <>
@@ -23,16 +25,19 @@ export function SteakCard({name, price}: CustomersCardProps) {
                         <span className="text-[20px]">{name}</span>
                         <span className="text-[16px] text-desc">Preço: <span className="text-[16px] text-purple-400">R$ {price}/kg</span></span>
                     </div>
-                    
+
                 </div>
                 <div className="ml-auto flex flex-row gap-4 items-end">
-                    <button 
+                    <button
                         className="flex items-center w-fit p-3 h-10 rounded-2xl cursor-pointer bg-purple-600/20 hover:bg-purple-600/30 text-purple-400 transition-all duration-300 border border-purple-500/30 hover:border-purple-500/50"
-                        onClick={() => navigate("/create-steak")}
+                        onClick={() => navigate(`/edit-steak/${id}`)}
                     >
-                         <GoPencil className="w-5 h-5"/> {/*Talvez necessite de um ID para verificar qual carne é*/}
+                        <GoPencil className="w-5 h-5" /> {/*Talvez necessite de um ID para verificar qual carne é*/}
                     </button>
-                    <Trash />
+                    <Trash action={async () => {
+                        await SteaksService.delete(id)
+                        if (onDelete) onDelete()
+                    }} />
                 </div>
             </div>
         </>

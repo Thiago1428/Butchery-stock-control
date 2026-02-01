@@ -7,7 +7,8 @@ import { FaMoneyBill } from "react-icons/fa";
 import { FaCreditCard } from "react-icons/fa6";
 import type { IconType } from "react-icons";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { OrdersService } from "../services/api";
 
 
 export function History() {
@@ -15,6 +16,8 @@ export function History() {
 
     const [userFilter, setUserFilter] = useState<string>("")
     const [paymentFilter, setPaymentFilter] = useState<string>("")
+
+    const [orders, setOrders] = useState<any[]>([])
 
     const paymentIcons: { [key: string]: IconType } = {
         pix: FaPix,
@@ -24,140 +27,11 @@ export function History() {
 
     const navigate = useNavigate()
 
-
-
-    const Orders = [
-        {
-            name: "Thiago",
-            date: "20 de novembro de 2025",
-            value: 1943,
-            received: 0,
-            Icon: "pix",
-            itens: [
-                { steak: "Picanha", weight: 4 },
-                { steak: "Costela", weight: 2 },
-                { steak: "Filé", weight: 1.2 },
-            ],
-            obs: "Entregar dia 21 de novembro",
-            id: 1
-        },
-        {
-            name: "Mariana",
-            date: "15 de outubro de 2025",
-            value: 870,
-            received: 200,
-            Icon: "card",
-            itens: [
-                { steak: "Picanha", weight: 2.5 },
-                { steak: "Alcatra", weight: 1 }
-            ],
-            obs: "Cliente prefere após as 18h",
-            id: 2
-        },
-        {
-            name: "Carlos",
-            date: "2 de dezembro de 2025",
-            value: 1240,
-            received: 1260,
-            Icon: "cash",
-            itens: [
-                { steak: "Costela", weight: 3 },
-                { steak: "Maminha", weight: 1.5 }
-            ],
-            obs: "Retirada no balcão",
-            id: 3
-        },
-        {
-            name: "Fernanda",
-            date: "8 de setembro de 2025",
-            value: 430,
-            received: 0,
-            Icon: "pix",
-            itens: [
-                { steak: "Filé", weight: 0.8 }
-            ],
-            obs: "Entrega urgente",
-            id: 4
-        },
-        {
-            name: "João Pedro",
-            date: "12 de dezembro de 2025",
-            value: 3100,
-            received: 500,
-            Icon: "card",
-            itens: [
-                { steak: "Picanha", weight: 5 },
-                { steak: "Costela", weight: 4 },
-                { steak: "Maminha", weight: 2 }
-            ],
-            obs: "Pagamento restante na entrega",
-            id: 5
-        },
-        {
-            name: "Larissa",
-            date: "5 de agosto de 2025",
-            value: 980,
-            received: 0,
-            Icon: "pix",
-            itens: [
-                { steak: "Alcatra", weight: 2 },
-                { steak: "Filé", weight: 1 }
-            ],
-            obs: "Confirmar endereço antes de entregar",
-            id: 6
-        },
-        {
-            name: "Ricardo",
-            date: "19 de julho de 2025",
-            value: 1540,
-            received: 1540,
-            Icon: "cash",
-            itens: [
-                { steak: "Picanha", weight: 3 },
-                { steak: "Filé", weight: 1.3 }
-            ],
-            obs: "Cliente frequente",
-            id: 7
-        },
-        {
-            name: "Camila",
-            date: "10 de maio de 2025",
-            value: 760,
-            received: 100,
-            Icon: "card",
-            itens: [
-                { steak: "Maminha", weight: 1.4 },
-                { steak: "Costela", weight: 1.8 }
-            ],
-            obs: "Enviar nota fiscal",
-            id: 8
-        },
-        {
-            name: "Gabriel",
-            date: "3 de abril de 2025",
-            value: 2240,
-            received: 0,
-            Icon: "pix",
-            itens: [
-                { steak: "Picanha", weight: 4 },
-                { steak: "Alcatra", weight: 2 }
-            ],
-            obs: "Pedido grande",
-            id: 9
-        },
-        {
-            name: "Isabela",
-            date: "17 de fevereiro de 2025",
-            value: 550,
-            received: 550,
-            Icon: "cash",
-            itens: [
-                { steak: "Filé", weight: 1 }
-            ],
-            obs: "Pagar entrega",
-            id: 10
-        }
-    ]
+    useEffect(() => {
+        OrdersService.getAll().then(data => {
+            setOrders(data)
+        })
+    }, [])
 
     const paymentMapping: { [key: string]: string } = {
         'dinheiro': 'cash',
@@ -165,13 +39,13 @@ export function History() {
         'cartao': 'card',
     }
 
-    const filteredOrders = Orders.filter(order => {
-        const matchesUser = order.name.toLowerCase().includes(userFilter.toLowerCase()) ||
-            order.obs.toLowerCase().includes(userFilter.toLowerCase());
+    const filteredOrders = orders.filter(order => {
+        const matchesUser = (order.customer_name || "").toLowerCase().includes(userFilter.toLowerCase()) ||
+            (order.obs || "").toLowerCase().includes(userFilter.toLowerCase());
 
         const matchesPayment = (!paymentFilter || paymentFilter === "todos")
             ? true
-            : order.Icon === paymentMapping[paymentFilter];
+            : order.payment_method === paymentMapping[paymentFilter];
 
         return matchesUser && matchesPayment;
     })
@@ -200,7 +74,7 @@ export function History() {
                                         name="Pesquisar"
                                         type="user"
                                         placeholder="Busque por um cliente ou observação"
-                                        content={[...new Set(Orders.map(item => item.name))].map(name => ({ name }))}
+                                        content={[...new Set(orders.map(item => item.customer_name))].map(name => ({ name }))}
                                     />
                                 </div>
                                 <div className="w-full">
@@ -218,47 +92,50 @@ export function History() {
                                     <span className="text-desc">{filteredOrders.length > 1 ? `${filteredOrders.length} pedidos encontrados` : `${filteredOrders.length} pedido encontrado`}</span>
                                 </div>
                                 <div>
-                                    <span className="text-purple-400 text-xl">Total: R$ {Orders.reduce((acc, item) => acc + item.value, 0).toFixed(2)}</span>
+                                    <span className="text-purple-400 text-xl">Total: R$ {orders.reduce((acc, item) => acc + item.total_value, 0).toFixed(2)}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="flex flex-col gap-4">
+                            {filteredOrders.length === 0 && <span className="text-desc text-center mt-4">Nenhum pedido encontrado</span>}
                             {filteredOrders.map(item => {
-                                const IconComponent = paymentIcons[item.Icon];
+                                const IconComponent = paymentIcons[item.payment_method];
+                                const date = item.created_at ? new Date(item.created_at).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Data desconhecida';
+
                                 return (
-                                    <div onClick={() => navigate("/details-order")} key={item.id} className="rounded-2xl bg-linear-to-br from-[#1a1a24] to-[#16161e] border cursor-pointer border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 hover:shadow-purple-500/20">
+                                    <div onClick={() => navigate(`/details-order/${item.id}`)} key={item.id} className="rounded-2xl bg-linear-to-br from-[#1a1a24] to-[#16161e] border cursor-pointer border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 hover:shadow-purple-500/20">
                                         <div className="p-6 w-full flex flex-row items-center justify-between ">
                                             <div className="flex flex-col gap-3">
                                                 <div className="flex flex-col gap-1">
-                                                    <span className="text-xl">{item.name}</span>
-                                                    <span className="text-[14px] text-desc">{item.date}</span>
+                                                    <span className="text-xl">{item.customer_name || "Cliente Desconhecido"}</span>
+                                                    <span className="text-[14px] text-desc">{date}</span>
                                                 </div>
                                                 <div className="grid grid-cols-3 gap-2">
-                                                    {item.itens.map((steaks, index) => {
+                                                    {item.items && item.items.map((steaks: any, index: number) => {
                                                         return (
                                                             <div key={`${item.id}-${index}`} className="px-3 py-1 min-w-40 justify-center inline-flex rounded-lg bg-purple-600/10 border border-purple-500/20 text-sm">
-                                                                <span>{steaks.steak} ({steaks.weight} kg)</span>
+                                                                <span>{steaks.steak_name || "Carne"} ({steaks.weight} kg)</span>
                                                             </div>
                                                         )
                                                     })}
 
                                                 </div>
                                                 <div>
-                                                    <span className="text-[14px] text-desc italic">"{item.obs}"</span>
+                                                    <span className="text-[14px] text-desc italic">{item.obs && `"${item.obs}"`}</span>
                                                 </div>
                                             </div>
                                             <div className="flex flex-col h-full text-center items-end gap-2">
                                                 <div>
-                                                    <span className="text-purple-400 text-2xl">R$ {item.value.toFixed(2)}</span>
+                                                    <span className="text-purple-400 text-2xl">R$ {item.total_value.toFixed(2)}</span>
                                                 </div>
-                                                {item.Icon === "cash" &&
+                                                {item.payment_method === "cash" &&
                                                     (<div>
-                                                        <span className="text-[14px] text-desc">Troco: R$ {(item.received - item.value).toFixed(2)}</span>
+                                                        <span className="text-[14px] text-desc">Troco: R$ {(item.payment_received - item.total_value).toFixed(2)}</span>
                                                     </div>
                                                     )
                                                 }
                                                 <div className="w-10 h-10 rounded-lg bg-purple-600/20 border border-purple-500/30 flex flex-col items-center justify-center">
-                                                    <IconComponent className="text-purple-400 w-5 h-5" />
+                                                    {IconComponent && <IconComponent className="text-purple-400 w-5 h-5" />}
                                                 </div>
                                             </div>
                                         </div>

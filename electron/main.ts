@@ -1,13 +1,12 @@
 import { app, BrowserWindow} from 'electron'
 
-// Desabilita aceleração de hardware para evitar erros com GPUs AMD
 app.disableHardwareAcceleration()
 
 app.on("ready", () => {
     const mainWindow = new BrowserWindow({
         minWidth: 1450,
         minHeight: 800,
-        //autoHideMenuBar: true,
+        autoHideMenuBar: true,
     })
     mainWindow.maximize()
     mainWindow.loadURL("http://localhost:3000/")

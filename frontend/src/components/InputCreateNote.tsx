@@ -66,6 +66,9 @@ export function InputCreateNote({ Icon, name, type, content, placeholder, value,
                                                                         color: '#9ca3af',
                                                                         opacity: 0.7,
                                                                     }
+                                                                },
+                                                                '& .MuiAutocomplete-clearIndicator': {
+                                                                    color: 'white'
                                                                 }
                                                             },
                                                         }}
@@ -108,10 +111,10 @@ export function InputCreateNote({ Icon, name, type, content, placeholder, value,
                                 case "date":
                                     return (
                                         <div className="w-full">
-                                            <input 
-                                                type="date" 
-                                                id="date-input" 
-                                                required 
+                                            <input
+                                                type="date"
+                                                id="date-input"
+                                                required
                                                 value={value}
                                                 onChange={onChange}
                                                 className="pl-2 pr-4 py-3 min-w-60 w-full rounded-xl bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors [&::-webkit-datetime-edit]:text-desc scheme-only-dark"
@@ -121,8 +124,8 @@ export function InputCreateNote({ Icon, name, type, content, placeholder, value,
                                 case "obs":
                                     return (
                                         <div className="w-full">
-                                            <textarea 
-                                                placeholder="Anotações sobre o pedido" 
+                                            <textarea
+                                                placeholder="Anotações sobre o pedido"
                                                 value={value}
                                                 onChange={onChange}
                                                 className="w-full pl-4 text-[14px] pr-4 py-3 rounded-xl bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors text-white placeholder:text-gray-600 resize-none placeholder:text-[16px]"

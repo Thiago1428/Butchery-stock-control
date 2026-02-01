@@ -5,9 +5,12 @@ type InputCreateProps = {
     Icon: IconType,
     type?: string
     placeholder: string
+    nameInput: string,
+    value?: string,
+    trade?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export function InputCreate({ name, Icon, type ,placeholder }: InputCreateProps) {
+export function InputCreate({ name, Icon, type, placeholder, nameInput, value, trade }: InputCreateProps) {
     return (
         <div className="flex flex-col gap-2">
             <span className="text-[15px] pl-1 text-desc">{name}</span>
@@ -17,12 +20,13 @@ export function InputCreate({ name, Icon, type ,placeholder }: InputCreateProps)
                 </div>
                 <input
                     type={type ?? "text"}
-                    name="name-customer"
-                    id="customer"
+                    name={nameInput}
                     placeholder={placeholder}
                     className="w-full scheme-dark pl-12 pr-4 py-4 rounded-xl bg-[#0f0f14] border border-purple-500/20 focus:border-purple-500/50 outline-none transition-colors text-white placeholder:text-gray-600"
                     required
                     step="any"
+                    value={value}
+                    onChange={trade}
                 />
             </div>
         </div>

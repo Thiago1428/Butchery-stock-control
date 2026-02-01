@@ -2,18 +2,25 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { CustomersCard } from "../components/CustomersCard";
 import { GoPlus } from "react-icons/go";
+import { CustomersService, type Customer } from "../services/api";
+import { useEffect, useState } from "react";
 
 export function Customers() {
+    const [clients, setClients] = useState<Customer[]>([])
+
     const navigate = useNavigate();
 
-    const clients = [
-        { name: "Person1", id: 1 },
-        { name: "Person2", id: 2 },
-        { name: "Person3", id: 3 },
-        { name: "Person4", id: 4 },
+    useEffect(() => {
+        CustomersService.getAll().then((data) => {
+            setClients(data)
+        })
+    }, [])
 
-    ] //Teste de criação automatica
-
+    function loadClients() {
+        CustomersService.getAll().then((data) => {
+            setClients(data)
+        })
+    }
 
     return (
         <>
@@ -27,11 +34,16 @@ export function Customers() {
                         <Button Icon={GoPlus} text="Criar cliente" action={() => navigate("/create-customer")} IconType="font-semibold" textType="font-semibold" />
                     </div>
                     <div className="mt-8 flex flex-col items-center gap-5">
-                        {clients.map(item => {
-                            return (
-                                <CustomersCard id={item.id} name={item.name} />
+                        {clients.length === 0 ? (
+                            <span className="text-desc text-[16px] mt-10">Nenhum cliente cadastrado</span>
+                        ) : (
+                            clients.map(item => {
+                                console.log(item.id)
+                                return (
+                                <CustomersCard id={item.id} name={item.name} orders_count={Number(item.orders_count)} total_spent={Number(item.total_spent)} onDelete={loadClients} />
                             )
-                        })}
+                        })
+                        )}
                     </div>
                 </div>
             </main>

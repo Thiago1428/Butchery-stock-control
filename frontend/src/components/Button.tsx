@@ -7,7 +7,7 @@ type ButtonProps = {
     action?: () => void,
     type?: ButtonHTMLAttributes<HTMLButtonElement>["type"],
     className?: string,
-    IconType?: string, 
+    IconType?: string,
     textType?: string
 }
 
@@ -19,8 +19,8 @@ export function Button({ Icon, text, action, type, className, IconType, textType
                 onClick={action}
                 type={type}
             >
-                {Icon ? <Icon className={`${IconType ?? ""} text-3xl`} />: null}
-                
+                {Icon ? <Icon className={`${IconType ?? ""} text-3xl`} /> : null}
+
                 <span className={`${textType ?? ""}`}>{text}</span>
             </button>
         </>

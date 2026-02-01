@@ -1,8 +1,6 @@
 import { Route, Routes, Outlet } from "react-router-dom";
 
-// Importe sua Sidebar (ajuste o caminho se necessário)
 import { SideBar } from "../components/Sidebar"; 
-
 import { Home } from "../pages/Home";
 import { Customers } from "../pages/Customers";
 import { Notes } from "../pages/Notes";
@@ -12,6 +10,7 @@ import { CreateCustomer } from "../pages/CreateCustomer";
 import { Profile } from "../pages/Profile";
 import { DetailsOrder } from "../pages/DetailsOrder";
 import { CreateSteak } from "../pages/CreateSteak";
+import { EditSteak } from "../pages/EditSteak";
 
 const AppLayout = () => {
     return (
@@ -34,10 +33,11 @@ export function AppRoutes() {
                 <Route path="/notes" element={<Notes />} />
                 <Route path="/steak" element={<Steak />} />
                 <Route path="/history" element={<History />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/customer/:id" element={<Profile />} />
                 <Route path="/create-customer" element={<CreateCustomer />} /> 
-                <Route path="/details-order" element={<DetailsOrder />} /> 
+                <Route path="/details-order/:id" element={<DetailsOrder />} /> 
                 <Route path="/create-steak" element={<CreateSteak />} /> 
+                <Route path="/edit-steak/:id" element={<EditSteak />} /> 
             </Route>
         </Routes>
     )
